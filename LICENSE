@@ -1,0 +1,94 @@
+End User License Agreement
+
+This End User License Agreement ("Agreement") is a legal contract between you as an individual or business organisation ("you" or "Licensee") and the Norn developer ("Licensor") for the Norn software (all editions), including any associated media, printed materials and electronic documentation (the "Software").
+
+By copying, downloading, accessing, or otherwise using the Software, you agree to be bound by the terms of this Agreement and you warrant and represent that you are authorised to enter into this Agreement on behalf of yourself or your business organisation.
+
+If you do not wish to be bound by the terms of this Agreement, you may not download, install, access or use the Software.
+
+• DEFINITIONS
+
+"Authorized User" means any employee, independent contractor or other temporary worker authorized by Licensee to use the Software while performing duties within the scope of their employment or assignment.
+
+"License Key" means a unique key-code that enables a single Authorized User to use the Software at a time. Only Licensor and/or its representatives are permitted to produce License Keys for the Software.
+
+"Commercial Use" means any use of the Software in connection with a business, including but not limited to: (a) use by an employee or contractor during paid work hours, (b) use to develop, test, or maintain software or services that generate revenue, (c) use within a for-profit organisation, or (d) use in CI/CD pipelines for commercial projects.
+
+"Personal Use" means use by an individual for personal projects, learning, education, or open-source projects that do not generate revenue.
+
+• OWNERSHIP
+
+This Agreement does not convey to you any rights of ownership in the Software. All right, title, benefit and interest in the Software and in any ideas, know-how, and programs which are developed by Licensor in the course of providing any technical services, including any enhancements or modifications made to the Software, shall at all times remain the property of Licensor.
+
+• GRANT OF LICENSE
+
+Upon your acceptance of this Agreement, Licensor grants you a limited, non-transferable, non-assignable, non-exclusive license to install and use the Software on the terms and conditions set forth herein.
+
+• INTENDED USERS OF THE SOFTWARE
+
+The Norn software is licensed to provide functionality to test APIs in Visual Studio Code as an Extension. The Norn CLI can be used locally on the user's computer for Personal Use without a license. A license is required to use the Software for Commercial Use, including use of the Norn CLI in CI/CD build pipelines.
+
+• FREE USE (PERSONAL USE)
+
+You may install and use the Software free of charge for Personal Use, including:
+- Personal projects and experimentation
+- Learning and educational purposes
+- Open-source projects that do not generate revenue
+- Academic research
+
+• COMMERCIAL EVALUATION
+
+Businesses and organisations may evaluate the Software for Commercial Use without a license for a period of fourteen (14) days from first use ("Evaluation Period"). The Evaluation Period is:
+- Limited to one (1) evaluation period per organisation
+- Intended for genuine evaluation purposes only
+- Not to be used for production workloads or client projects
+- Not extendable or renewable without written permission from the Licensor
+
+After the Evaluation Period, continued Commercial Use requires a valid license. Abuse of the Evaluation Period, including but not limited to repeated evaluations by the same organisation, rotating users to extend evaluation, or using evaluation for production purposes, constitutes a breach of this Agreement.
+
+• COMMERCIAL USE
+
+A license is required for Commercial Use of the Software after the Evaluation Period. Commercial Use includes but is not limited to:
+- Use within a for-profit company or organisation
+- Use by employees or contractors during paid work
+- Use in CI/CD pipelines for commercial projects
+- Use to develop, test, or maintain revenue-generating software or services
+
+Please contact the Licensor for commercial licensing options.
+
+• RESTRICTIONS ON USE OF THE SOFTWARE
+
+You are NOT permitted to:
+a) Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software.
+b) Decompile, disassemble or reverse engineer the Software or attempt to do any such things.
+c) Reproduce, copy, distribute, resell or otherwise use the whole or any part of the Software's code for any commercial purpose.
+d) Disable, modify or hide notifications sent by the Software.
+e) Distribute, resell, or share License Keys.
+f) Misrepresent your use as Personal Use when it constitutes Commercial Use.
+g) Use older versions of the Software to circumvent licensing requirements.
+
+• LIMITED WARRANTY AND DISCLAIMER OF WARRANTY
+
+SOFTWARE IS PROVIDED TO LICENSEE "AS IS" AND WITHOUT WARRANTIES. LICENSOR MAKES NO WARRANTY AS TO ITS USE OR PERFORMANCE. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, LICENSOR AND ITS AFFILIATES, SUPPLIERS AND RESELLERS DISCLAIM ALL OTHER WARRANTIES AND CONDITIONS, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT, WITH REGARD TO SOFTWARE, AND THE PROVISION OF OR FAILURE TO PROVIDE SUPPORT SERVICES.
+
+• DISCLAIMER OF DAMAGES
+
+TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL LICENSOR BE LIABLE TO LICENSEE UNDER ANY THEORY FOR ANY DAMAGES SUFFERED BY LICENSEE OR ANY USER OF SOFTWARE, OR FOR ANY SPECIAL, INCIDENTAL, INDIRECT, CONSEQUENTIAL, OR SIMILAR DAMAGES (INCLUDING, BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS OR CONFIDENTIAL OR OTHER INFORMATION, FOR BUSINESS INTERRUPTION, FOR PERSONAL INJURY, FOR LOSS OF PRIVACY, FOR FAILURE TO MEET ANY DUTY INCLUDING OF GOOD FAITH OR OF REASONABLE CARE, FOR NEGLIGENCE, AND FOR ANY OTHER PECUNIARY OR OTHER LOSS WHATSOEVER) ARISING OUT OF THE USE OR INABILITY TO USE SOFTWARE, OR THE PROVISION OF OR FAILURE TO PROVIDE SUPPORT SERVICES, EVEN IF LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, AND REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE) UPON WHICH THE CLAIM IS BASED.
+
+IN ANY CASE, LICENSOR'S ENTIRE LIABILITY UNDER ANY PROVISION OF THIS AGREEMENT WILL BE LIMITED TO THE AMOUNT ACTUALLY PAID BY LICENSEE FOR SOFTWARE UNDER THIS AGREEMENT.
+
+• TERMINATION
+
+This license can be terminated by you at any time. If you choose to terminate the license, you will not be entitled to any refund of the license fee(s) you have paid. Your license may be terminated by Licensor if you fail to comply with the terms of this Agreement within ten (10) days after receipt of written notice of such failure. In the event of termination, you must cease using the Software, destroy all copies of the Software (including copies in storage media) and certify such destruction to Licensor. This requirement applies to all copies in any form, partial or complete. Upon the effective date of any termination, you relinquish all rights granted under this Agreement.
+
+• RELATIONSHIP OF PARTIES
+
+You and Licensor are independent parties. Nothing in this Agreement shall be construed as making you an employee, agent, partner or legal representative of Licensor.
+
+• ENTIRE AGREEMENT
+
+This Agreement and any document expressly referred to in it constitute the whole agreement between you and the Licensor and supersede any previous arrangement understanding or agreement between you and the Licensor, relating to the licensing of the Software.
+
+The parties acknowledge that, in entering into this Agreement (and the documents referred to in it), neither party relies on any statement, representation, assurance or warranty ("Representation") of any person (whether a party to this Agreement or not) other than as expressly set out in this Agreement or those documents.
+
+The parties agree that the only rights and remedies available to each party arising out of or in connection with a Representation shall be for breach of contract as provided in this Agreement.
