@@ -3,7 +3,7 @@
 A powerful REST client extension for VS Code with sequences, variables, script execution, and CLI support for CI/CD pipelines.
 
 ![VS Code Version](https://img.shields.io/badge/VS%20Code-1.108.1+-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
+![License](https://img.shields.io/badge/license-EULA-orange)
 
 ## Features
 
@@ -28,14 +28,14 @@ A powerful REST client extension for VS Code with sequences, variables, script e
 
 ### Basic Request
 
-```http
+```bash
 GET https://api.example.com/users
 Authorization: Bearer my-token
 ```
 
 ### Variables
 
-```http
+```bash
 var baseUrl = https://api.example.com
 var token = my-secret-token
 
@@ -45,7 +45,7 @@ Authorization: Bearer {{token}}
 
 ### Request with Body
 
-```http
+```bash
 POST https://api.example.com/users
 Content-Type: application/json
 {
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 Chain multiple requests and capture response data:
 
-```http
+```bash
 sequence AuthFlow
     POST https://api.example.com/login
     Content-Type: application/json
@@ -78,7 +78,7 @@ Click "▶ Run Sequence" above the `sequence` line to execute all requests in or
 
 Run scripts within sequences for setup, data generation, or validation:
 
-```http
+```bash
 sequence TestWithScripts
     # Run a setup script
     run bash ./scripts/seed-db.sh
@@ -98,7 +98,7 @@ Scripts receive variables as environment variables with `NORN_` prefix (e.g., `N
 
 Add debug output to your sequences:
 
-```http
+```bash
 sequence DebugFlow
     print Starting authentication...
     
@@ -214,7 +214,7 @@ jobs:
 
 **Free for Personal Use** - You may use Norn for personal projects, learning, education, and non-commercial open-source projects at no cost.
 
-**14-Day Commercial Evaluation** - Businesses may evaluate Norn free for 14 days before purchasing a license.
+**30-Day Commercial Evaluation** - Businesses may evaluate Norn free for 30 days before purchasing a license.
 
 **Commercial Use Requires a License** - After the evaluation period, use within a business, by employees during work, or in CI/CD pipelines for commercial projects requires a license. Contact us for commercial licensing options.
 
