@@ -1,0 +1,28 @@
+import "./pet.nornapi"
+import "./../common.nornapi"
+
+[SimpleRequest]
+GET "https://petstore.swagger.io/v2/pet/1"
+Content-Type: application/json
+
+[RequestUsingNornApiFile]
+GET GetPetById(1)
+CommonHeaders
+
+sequence GetPetIdFromScript
+
+    var petId = run powershell "./scripts/getPetId.ps1"
+    print "Pet id is: " + petId
+
+    var petData = run SimpleRequest
+
+    assert petData.status == 200
+    assert petData.body.id == petId
+
+end sequence
+
+test sequence GetPetIdThisRunsAsPartOfCLI
+
+    run GetPetIdFromScript
+
+end sequence

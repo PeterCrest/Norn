@@ -1,0 +1,9 @@
+var version = v2
+
+[env:dev]
+var baseUrl = https://petstore.swagger.io
+secret apiKey = dev-api-key-here
+
+[env:prod]
+var baseUrl = https://petstore.swagger.io
+secret apiKey = dev-api-key-here

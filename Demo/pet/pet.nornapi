@@ -1,0 +1,16 @@
+swagger "https://petstore.swagger.io/v2/swagger.json"
+
+endpoints
+    # pet - Everything about your Pets
+    UploadFile: POST {{baseUrl}}/{{version}}/pet/{petId}/uploadImage
+    AddPet: POST {{baseUrl}}/{{version}}/pet
+    UpdatePet: PUT {{baseUrl}}/{{version}}/pet
+    FindPetsByStatus: GET {{baseUrl}}/{{version}}/pet/findByStatus
+    FindPetsByTags: GET {{baseUrl}}/{{version}}/pet/findByTags
+    GetPetById: GET {{baseUrl}}/{{version}}/pet/{petId}
+    UpdatePetWithForm: POST {{baseUrl}}/{{version}}/pet/{petId}
+    DeletePet: DELETE {{baseUrl}}/{{version}}/pet/{petId}
+
+end endpoints
+
+
