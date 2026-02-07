@@ -22,6 +22,7 @@ A powerful REST client extension for VS Code with sequences, assertions, environ
 - **Named Requests**: Define reusable requests with `[RequestName]` and call them with `run RequestName`
 - **Conditionals**: Control flow with `if/end if` blocks based on response data
 - **Wait Commands**: Add delays between requests with `wait 1s` or `wait 500ms`
+- **Retry and Backoff**: Automatically retry failed requests with `retry 3 backoff 200 ms`
 - **JSON File Loading**: Load test data from JSON files with `run readJson ./file.json`
 - **Property Updates**: Modify loaded JSON data inline with `config.property = value`
 - **Script Execution**: Run bash, PowerShell, or JavaScript scripts within sequences
@@ -605,6 +606,37 @@ sequence RateLimitedFlow
     GET https://api.example.com/jobs/{{jobId}}/result
 end sequence
 ```
+
+### Retry and Backoff
+
+Automatically retry failed HTTP requests with configurable backoff:
+
+```bash
+sequence RetryExample
+    # Retry up to 3 times with 200ms linear backoff (200ms, 400ms, 600ms)
+    var result = GET "https://api.example.com/flaky-endpoint" retry 3 backoff 200 ms
+    
+    # Works with named endpoints from .nornapi files
+    var user = GET UserEndpoint retry 2 backoff 500 ms
+    
+    # Works with named requests
+    var data = run FlakyRequest retry 3 backoff 100 ms
+    
+    # Retry only (uses default 1 second backoff)
+    var simple = GET "https://api.example.com/status" retry 2
+end sequence
+```
+
+**Retries trigger on:**
+- 5xx server errors (500, 502, 503, etc.)
+- 429 rate limiting
+- Network failures and timeouts
+
+**Time units:**
+- `ms` or `milliseconds` - e.g., `backoff 200 ms`
+- `s` or `seconds` - e.g., `backoff 2 s`
+
+The response panel shows a retry indicator (🔄 retried 2x) when retries occurred.
 
 ### JSON File Loading
 
