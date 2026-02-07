@@ -1,0 +1,90 @@
+import "./pet.nornapi"
+import "./../common.nornapi"
+
+###
+# Store API Tests
+# Demonstrates: wait commands, JSON file loading, full CRUD flow
+###
+
+# ─────────────────────────────────────────────────────────
+# Inventory Tests
+# ─────────────────────────────────────────────────────────
+
+@smoke
+test sequence GetStoreInventory
+    GET GetInventory
+    Json
+    
+    assert $1.status == 200
+    assert $1.body isType object
+    
+    print "Inventory" | "Status counts retrieved"
+end sequence
+
+
+# ─────────────────────────────────────────────────────────
+# Order Flow - Full CRUD
+# ─────────────────────────────────────────────────────────
+
+@regression
+test sequence OrderLifecycle
+    print "Starting" | "Order lifecycle test"
+    
+    # Create an order
+    POST PlaceOrder
+    Json
+    {
+        "petId": 1,
+        "quantity": 1,
+        "shipDate": "2025-01-15T10:00:00.000Z",
+        "status": "placed",
+        "complete": false
+    }
+    
+    assert $1.status == 200
+    var orderId = $1.body.id
+    print "Created" | "Order ID: {{orderId}}"
+    
+    # Wait a moment before fetching
+    wait 500ms
+    
+    # Verify the order exists
+    GET GetOrderById({{orderId}})
+    Json
+    
+    assert $2.status == 200
+    assert $2.body.id == {{orderId}}
+    assert $2.body.status == "placed"
+    
+    # Cleanup - delete the order
+    DELETE DeleteOrder({{orderId}})
+    
+    if $3.status == 200
+        print "Cleanup" | "Order {{orderId}} deleted"
+    end if
+end sequence
+
+
+# ─────────────────────────────────────────────────────────
+# Data-Driven Tests with JSON File
+# ─────────────────────────────────────────────────────────
+
+@theory("./testdata/pets.json")
+test sequence CreatePetsFromFile(name, status)
+    print "Testing" | "Create pet: {{name}} ({{status}})"
+    
+    POST AddPet
+    Json
+    {
+        "name": "{{name}}",
+        "status": "{{status}}",
+        "photoUrls": ["https://example.com/photo.jpg"]
+    }
+    
+    assert $1.status == 200
+    assert $1.body.name == "{{name}}"
+    
+    # Cleanup
+    var petId = $1.body.id
+    DELETE DeletePet({{petId}})
+end sequence

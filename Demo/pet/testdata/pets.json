@@ -1,0 +1,5 @@
+[
+    { "name": "Max", "status": "available" },
+    { "name": "Bella", "status": "pending" },
+    { "name": "Charlie", "status": "sold" }
+]

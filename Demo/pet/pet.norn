@@ -1,28 +1,102 @@
 import "./pet.nornapi"
+import "./shared.norn"
 import "./../common.nornapi"
 
-[SimpleRequest]
-GET "https://petstore.swagger.io/v2/pet/1"
-Content-Type: application/json
+###
+# Pet Store API Tests
+# Demonstrates: tags, assertions, conditionals, sequences, parameterized tests
+###
 
-[RequestUsingNornApiFile]
-GET GetPetById(1)
-CommonHeaders
+# ─────────────────────────────────────────────────────────
+# Basic API Tests
+# ─────────────────────────────────────────────────────────
 
-sequence GetPetIdFromScript
-
-    var petId = run powershell "./scripts/getPetId.ps1"
-    print "Pet id is: " + petId
-
-    var petData = run SimpleRequest
-
-    assert petData.status == 200
-    assert petData.body.id == petId
-
+@smoke
+test sequence GetPetByStatus
+    print "Testing" | "Find pets by status"
+    
+    GET FindPetsByStatus
+    Json
+    ?status=available
+    
+    assert $1.status == 200
+    assert $1.body isType array
+    assert $1.duration < 5000
 end sequence
 
-test sequence GetPetIdThisRunsAsPartOfCLI
 
-    run GetPetIdFromScript
+@smoke
+test sequence CreateAndVerifyPet
+    # Use shared sequence to create a pet
+    var pet = run CreatePet("Buddy")
+    
+    # Verify it was created correctly
+    run VerifyPet({{pet.petId}}, "Buddy")
+    
+    # Cleanup
+    run DeletePet({{pet.petId}})
+end sequence
 
+
+# ─────────────────────────────────────────────────────────
+# Parameterized Tests - Data-driven testing
+# ─────────────────────────────────────────────────────────
+
+@data("available")
+@data("pending")
+@data("sold")
+test sequence FindPetsByStatusParameterized(status)
+    print "Testing status" | "{{status}}"
+    
+    GET FindPetsByStatus
+    Json
+    ?status={{status}}
+    
+    assert $1.status == 200
+    assert $1.body isType array
+end sequence
+
+
+# ─────────────────────────────────────────────────────────
+# Error Handling Tests
+# ─────────────────────────────────────────────────────────
+
+@regression
+test sequence HandleNotFound
+    # Try to get a pet that doesn't exist
+    GET GetPetById(99999999)
+    Json
+    
+    if $1.status == 404
+        print "Expected" | "Pet not found (404)"
+        assert $1.body.message exists
+    end if
+    
+    if $1.status == 200
+        print "Unexpected" | "Pet actually exists"
+    end if
+end sequence
+
+
+# ─────────────────────────────────────────────────────────
+# Script Integration
+# ─────────────────────────────────────────────────────────
+
+test sequence ScriptIntegrationDemo
+    # Get pet ID from a script
+    var petId = run powershell "./scripts/getPetId.ps1"
+    print "Script returned" | "Pet ID: {{petId}}"
+    
+    GET GetPetById({{petId}})
+    Json
+    
+    # This pet may or may not exist - handle both cases
+    if $1.status == 200
+        print "Found" | "Pet name: {{$1.body.name}}"
+        assert $1.body.id isType number
+    end if
+    
+    if $1.status == 404
+        print "Not Found" | "Pet {{petId}} doesn't exist"
+    end if
 end sequence

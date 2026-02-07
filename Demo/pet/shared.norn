@@ -1,0 +1,42 @@
+import "./pet.nornapi"
+import "./../common.nornapi"
+
+# Reusable sequence to create a pet and return its data
+sequence CreatePet(name, status = "available")
+    POST AddPet
+    Json
+    {
+        "name": "{{name}}",
+        "status": "{{status}}",
+        "photoUrls": ["https://example.com/photo.jpg"],
+        "category": { "id": 1, "name": "Dogs" },
+        "tags": [{ "id": 1, "name": "friendly" }]
+    }
+    
+    var petId = $1.body.id
+    var petName = $1.body.name
+    
+    print "Pet Created" | "ID: {{petId}}, Name: {{petName}}"
+    return petId, petName, status
+end sequence
+
+# Reusable sequence to delete a pet (cleanup)
+sequence DeletePet(petId)
+    DELETE DeletePet({{petId}})
+    
+    if $1.status == 200
+        print "Cleanup" | "Deleted pet {{petId}}"
+    end if
+end sequence
+
+# Verify a pet exists with expected data
+sequence VerifyPet(petId, expectedName)
+    GET GetPetById({{petId}})
+    Json
+    
+    assert $1.status == 200
+    assert $1.body.name == "{{expectedName}}"
+    assert $1.body.id exists
+    
+    return $1.body
+end sequence

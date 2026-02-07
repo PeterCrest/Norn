@@ -1,3 +1,10 @@
-headers CommonHeaders
+# Common header groups for all API tests
+
+headers Json
 Content-Type: application/json
+Accept: application/json
+end headers
+
+headers FormData
+Content-Type: application/x-www-form-urlencoded
 end headers

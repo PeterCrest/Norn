@@ -14,6 +14,7 @@ A powerful REST client extension for VS Code with sequences, assertions, environ
 - **Sequences**: Chain multiple requests with response capture using `$N.path`
 - **Test Sequences**: Mark sequences as tests with `test sequence` for CLI execution
 - **Test Explorer**: Run tests from VS Code's Testing sidebar with colorful output
+- **Swagger Coverage**: Track API coverage with status bar indicator and detailed panel
 - **Parameterized Tests**: Data-driven testing with `@data` and `@theory` annotations
 - **Sequence Tags**: Tag sequences with `@smoke`, `@team(CustomerExp)` for filtering in CI/CD
 - **Secret Variables**: Mark sensitive environment variables with `secret` for automatic redaction
@@ -78,7 +79,7 @@ sequence Example
     GET https://api.example.com/users/{{userId}}
     var userName = $1.body.name
     
-    print Result | {{message}}, Name: {{userName}}
+    print "Result" | "{{message}}, Name: {{userName}}"
 end sequence
 ```
 
@@ -132,14 +133,14 @@ sequence Login
     Content-Type: application/json
     {"username": "admin", "password": "secret"}
     var token = $1.body.accessToken
-    print Logged in | Token: {{token}}
+    print "Logged in" | "Token: {{token}}"
 end sequence
 
 # Define reusable teardown sequence
 sequence Logout
     POST {{baseUrl}}/auth/logout
     Authorization: Bearer {{token}}
-    print Logged out
+    print "Logged out"
 end sequence
 
 # Main test sequence uses setup/teardown
@@ -170,7 +171,7 @@ Sequences can accept parameters with optional default values:
 ```bash
 # Required parameter
 sequence Greet(name)
-    print Hello, {{name}}!
+    print "Hello, {{name}}!"
 end sequence
 
 # Optional parameter with default
@@ -217,8 +218,8 @@ sequence MyTests
     var user = run FetchUser("123")
     
     # Access individual fields
-    print User name: {{user.name}}
-    print User email: {{user.email}}
+    print "User name" | "{{user.name}}"
+    print "User email" | "{{user.email}}"
     
     # Use in requests
     POST {{baseUrl}}/messages
@@ -433,7 +434,7 @@ sequence UserTests
     
     # Capture response to variable
     var user = GET GetUser(1) Json
-    print User | {{user.body.name}}
+    print "User" | "{{user.body.name}}"
     
     # Use variables in endpoint parameters
     var userId = 5
@@ -550,7 +551,7 @@ sequence AuthFlow
     
     # Run another named request
     run GetProfile
-    print Profile | Welcome, {{$2.body.name}}!
+    print "Profile" | "Welcome, {{$2.body.name}}!"
 end sequence
 ```
 
@@ -564,7 +565,7 @@ sequence ConditionalFlow
     
     # Execute block only if condition is true
     if $1.status == 200
-        print Success | User found!
+        print "Success" | "User found!"
         
         GET https://api.example.com/users/1/orders
         assert $2.status == 200
@@ -572,12 +573,12 @@ sequence ConditionalFlow
     
     # Check for errors
     if $1.status == 404
-        print Error | User not found
+        print "Error" | "User not found"
     end if
     
     # Conditions support all assertion operators
     if $1.body.role == "admin"
-        print Admin | User has admin privileges
+        print "Admin" | "User has admin privileges"
     end if
 end sequence
 ```
@@ -591,7 +592,7 @@ sequence RateLimitedFlow
     POST https://api.example.com/jobs
     var jobId = $1.body.id
     
-    print Waiting | Job submitted, waiting for completion...
+    print "Waiting" | "Job submitted, waiting for completion..."
     
     # Wait 2 seconds
     wait 2s
@@ -615,19 +616,19 @@ sequence DataDrivenTest
     var config = run readJson ./test-config.json
     
     # Access properties
-    print Config | Using API: {{config.baseUrl}}
+    print "Config" | "Using API: {{config.baseUrl}}"
     
     # Use in requests
     GET {{config.baseUrl}}/users/{{config.testUser.id}}
     
     # Access nested values and arrays
-    print First Role | {{config.testUser.roles[0]}}
+    print "First Role" | "{{config.testUser.roles[0]}}"
     
     # Modify loaded data inline
     config.baseUrl = https://api.updated.com
     config.testUser.name = Updated Name
     
-    print Updated | New URL: {{config.baseUrl}}
+    print "Updated" | "New URL: {{config.baseUrl}}"
 end sequence
 ```
 
@@ -673,7 +674,7 @@ sequence DatabaseQuery
     var dbResult = run powershell ./scripts/query-db.ps1
     
     # Access properties from the JSON output
-    print User Found | ID: {{dbResult.id}}, Name: {{dbResult.name}}
+    print "User Found" | "ID: {{dbResult.id}}, Name: {{dbResult.name}}"
     
     # Use in requests
     GET https://api.example.com/users/{{dbResult.id}}
@@ -696,18 +697,18 @@ Add debug output to your sequences:
 
 ```bash
 sequence DebugFlow
-    print Starting authentication...
+    print "Starting authentication..."
     
     POST https://api.example.com/login
     Content-Type: application/json
     {"user": "admin"}
     
     var token = $1.token
-    print Token received | Value: {{token}}
+    print "Token received" | "Value: {{token}}"
 end sequence
 ```
 
-Use `print Title | Body content` for expandable messages in the result view.
+Use `print "Title" | "Body content"` for expandable messages in the result view.
 
 ## CLI Usage
 
@@ -841,6 +842,41 @@ jobs:
 
 ## Syntax Reference
 
+### Swagger API Coverage
+
+Track how much of your OpenAPI/Swagger spec is covered by tests:
+
+- **Status Bar**: Shows coverage percentage when a `.nornapi` file has a `swagger` URL
+- **Coverage Panel**: Click the status bar to see detailed per-endpoint coverage
+- **Per Status Code**: Each response code (200, 400, 404) counts separately toward 100%
+- **Wildcard Support**: Assert `2xx` to match 200, 201, 204, etc.
+- **Test Sequences Only**: Only `test sequence` blocks count toward coverage
+- **CodeLens**: Coverage shown on swagger import lines
+
+Coverage is calculated by analyzing your test sequences for:
+1. API calls by endpoint name (e.g., `GET GetPetById`)
+2. Status assertions (e.g., `assert $1.status == 200`)
+
+```bash
+# In your .nornapi file:
+swagger https://petstore.swagger.io/v2/swagger.json
+
+GetOrderById: GET https://petstore.swagger.io/v2/store/order/{orderId}
+```
+
+```bash
+# In your .norn test file:
+test sequence OrderTests
+    # This covers GET /store/order/{orderId} with 200
+    var order = GET GetOrderById(1)
+    assert order.status == 200
+    
+    # This covers GET /store/order/{orderId} with 404
+    var notFound = GET GetOrderById(999999)
+    assert notFound.status == 404
+end sequence
+```
+
 | Syntax | Description |
 |--------|-------------|
 | `var name = value` | Declare a variable (literal) |
@@ -906,8 +942,8 @@ jobs:
 | `var x = run js ./script.js` | Run script and capture output |
 | `var data = run readJson ./file.json` | Load JSON file into variable |
 | `data.property = value` | Update loaded JSON property |
-| `print Message` | Print a message |
-| `print Title \| Body` | Print with expandable body |
+| `print "Message"` | Print a message |
+| `print "Title" \| "Body"` | Print with expandable body |
 
 ### Environments (.nornenv)
 

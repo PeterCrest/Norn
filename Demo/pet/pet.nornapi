@@ -10,7 +10,14 @@ endpoints
     GetPetById: GET {{baseUrl}}/{{version}}/pet/{petId}
     UpdatePetWithForm: POST {{baseUrl}}/{{version}}/pet/{petId}
     DeletePet: DELETE {{baseUrl}}/{{version}}/pet/{petId}
+    
+    # store - Access to Petstore orders
+    GetInventory: GET {{baseUrl}}/{{version}}/store/inventory
+    PlaceOrder: POST {{baseUrl}}/{{version}}/store/order
+    GetOrderById: GET {{baseUrl}}/{{version}}/store/order/{orderId}
+    DeleteOrder: DELETE {{baseUrl}}/{{version}}/store/order/{orderId}
 
 end endpoints
+
 
 
