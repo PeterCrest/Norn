@@ -28,8 +28,10 @@ A powerful REST client extension for VS Code with sequences, assertions, environ
 - **Script Execution**: Run bash, PowerShell, or JavaScript scripts within sequences
 - **Print Statements**: Debug and log messages during sequence execution
 - **Cookie Support**: Automatic cookie jar with persistence across requests
+- **Response Comparison**: Compare any two API responses side-by-side with VS Code's diff view
+- **Clickable JSON**: Click any JSON value in the response panel to auto-generate assertions
 - **Syntax Highlighting**: Full syntax highlighting for requests, headers, JSON bodies
-- **IntelliSense**: Autocomplete for HTTP methods, headers, variables, and keywords
+- **IntelliSense**: Autocomplete for HTTP methods, headers, variables, keywords, and Swagger-based request body keys/templates for endpoint POST/PUT/PATCH calls
 - **Diagnostics**: Error highlighting for undefined variables
 - **CLI**: Run tests from terminal with JUnit/HTML reports for CI/CD automation
 
@@ -102,6 +104,8 @@ Content-Type: application/json
     "email": "john@example.com"
 }
 ```
+
+If the request uses an imported endpoint (`POST/PUT/PATCH EndpointName`) backed by a cached Swagger spec, typing `{` on the body line offers **Insert request body template** (required fields only). As you type JSON keys, IntelliSense suggests schema properties for that object.
 
 ### Sequences (Chained Requests)
 
@@ -338,7 +342,7 @@ end sequence
 - Circular imports are detected and reported as errors
 - Only named requests `[Name]` and sequences are imported
 - Variables are resolved at import time (baked in), not exported
-- `.nornenv` environment variables are shared across all files
+- `.nornenv` resolution is file-aware: Norn walks up from the running file and uses the closest `.nornenv`
 
 ### API Definition Files (.nornapi)
 
@@ -504,7 +508,8 @@ end sequence
 
 ### Environments
 
-Create a `.nornenv` file in your workspace root to manage environment-specific variables:
+Create a `.nornenv` file to manage environment-specific variables.  
+Norn resolves the closest `.nornenv` by walking up from the file being run (or edited):
 
 ```bash
 # .nornenv file
@@ -741,6 +746,37 @@ end sequence
 ```
 
 Use `print "Title" | "Body content"` for expandable messages in the result view.
+
+### Response Panel Tools
+
+The response panel provides interactive tools that accelerate test development:
+
+#### Response Comparison
+
+Compare any two API responses side-by-side using VS Code's built-in diff view:
+
+1. Click **⇄ Compare** on the first response body
+2. Click **⇄ Compare** on the second response
+3. VS Code opens a diff view showing differences between the two responses
+
+This is useful for comparing responses across environments, before/after changes, or expected vs actual results.
+
+#### Clickable JSON Values
+
+Generate assertions instantly by clicking on JSON values in the response:
+
+1. Expand a response body in the panel
+2. Hover over any value (string, number, boolean, null) - it highlights with a **+** badge
+3. Click to automatically insert an assertion at the end of your sequence
+
+For example, clicking on `"active"` in `{"status": "active"}` generates:
+```bash
+assert $response.body.status == "active"
+```
+
+Works with nested paths and arrays:
+- `body.user.email` → `assert $user.body.user.email == "john@example.com"`
+- `body.items[0].id` → `assert $order.body.items[0].id == 123`
 
 ## CLI Usage
 
@@ -984,6 +1020,7 @@ end sequence
 | `var name = value` | Common variable (all environments) |
 | `[env:name]` | Start environment section |
 | `# comment` | Comment line |
+| resolution | Closest ancestor `.nornenv` from the current `.norn`/`.nornapi` file |
 
 ### API Definitions (.nornapi)
 
