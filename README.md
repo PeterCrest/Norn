@@ -279,19 +279,19 @@ end sequence
 
 ```bash
 # Run sequences tagged @smoke
-npx norn tests/ --tag smoke
+norn tests/ --tag smoke
 
 # AND logic: must have BOTH tags
-npx norn tests/ --tag smoke --tag auth
+norn tests/ --tag smoke --tag auth
 
 # OR logic: match ANY tag
-npx norn tests/ --tags smoke,regression
+norn tests/ --tags smoke,regression
 
 # Key-value exact match
-npx norn tests/ --tag team(CustomerExp)
+norn tests/ --tag team(CustomerExp)
 
 # Combine with environment
-npx norn tests/ --env staging --tag smoke
+norn tests/ --env staging --tag smoke
 ```
 
 **Behavior:**
@@ -531,6 +531,36 @@ var apiKey = prod-key-789
 ```
 
 Select the active environment from the VS Code status bar. Environment variables override common variables.
+
+#### Encrypted Secrets in `.nornenv`
+
+Use `secret` declarations with encrypted values so `.nornenv` can be committed safely:
+
+```nornenv
+[env:prelive]
+secret apiKey = ENC[NORN_AGE_V1:kid=team-main:...]
+```
+
+Key flow:
+
+```bash
+# Generate and cache a shared key once
+norn secrets keygen --name team-main
+
+# Teammates import the shared key from your vault
+norn secrets import-key --kid team-main
+
+# Encrypt plaintext secrets already in .nornenv
+norn secrets encrypt --file .nornenv --env prelive --var apiKey --kid team-main
+
+# Rotate an existing encrypted value
+norn secrets rotate --file .nornenv --env prelive --var apiKey
+
+# CI guardrail: fail on plaintext secrets
+norn secrets audit .
+```
+
+When Norn detects a locked secret with a missing key id (`kid`), it prompts once, then stores the key in `.norn-cache/secret-keys.json` (gitignored).
 
 ### Named Requests
 
@@ -784,28 +814,31 @@ Run tests from the command line for CI/CD pipelines. Only sequences marked with 
 
 ```bash
 # Run all test sequences in a file
-npx norn api-tests.norn
+norn api-tests.norn
 
 # Run all test sequences in a directory (recursive)
-npx norn tests/
+norn tests/
 
 # Run a specific sequence
-npx norn api-tests.norn --sequence AuthFlow
+norn api-tests.norn --sequence AuthFlow
 
 # Run with a specific environment
-npx norn api-tests.norn --env staging
+norn api-tests.norn --env staging
+
+# Run against local/self-signed TLS endpoints (dev only)
+norn api-tests.norn --insecure
 
 # Generate JUnit XML report for CI/CD
-npx norn tests/ --junit --output-dir ./reports
+norn tests/ --junit --output-dir ./reports
 
 # Generate HTML report
-npx norn tests/ --html --output-dir ./reports
+norn tests/ --html --output-dir ./reports
 
 # Verbose output with colors
-npx norn api-tests.norn -v
+norn api-tests.norn -v
 
 # Show help
-npx norn --help
+norn --help
 ```
 
 ### CLI Options
@@ -814,6 +847,7 @@ npx norn --help
 |--------|-------------|
 | `-s, --sequence <name>` | Run a specific sequence by name |
 | `-e, --env <name>` | Use a specific environment from .nornenv |
+| `--insecure` | Disable TLS certificate verification (dev/self-signed endpoints only) |
 | `--tag <name>` | Filter by tag (AND logic, can repeat) |
 | `--tags <list>` | Filter by comma-separated tags (OR logic) |
 | `-j, --json` | Output results as JSON |
@@ -823,6 +857,8 @@ npx norn --help
 | `-v, --verbose` | Show detailed output with colors |
 | `--no-fail` | Don't exit with error code on failed tests |
 | `-h, --help` | Show help message |
+
+Security note: `--insecure` should only be used for local development or trusted internal test environments. Keep TLS verification enabled for staging/production endpoints.
 
 ## Test Explorer
 
@@ -898,7 +934,7 @@ jobs:
           node-version: '20'
       
       - name: Run API Tests
-        run: npx norn ./tests/ --junit --output-dir ./reports
+        run: norn ./tests/ --junit --output-dir ./reports
       
       - name: Upload Test Results
         uses: actions/upload-artifact@v4
@@ -1049,6 +1085,10 @@ end sequence
 - `Norn: Select Environment` - Choose the active environment from .nornenv
 - `Norn: Clear Cookies` - Clear all stored cookies
 - `Norn: Show Stored Cookies` - Display cookies in output
+
+## Extension Settings
+
+- `norn.security.verifyTlsCertificates` (default: `true`) - Verify TLS certificates for HTTPS requests and Swagger/OpenAPI fetches. Disable only when testing local endpoints with self-signed certificates.
 
 ## Requirements
 
