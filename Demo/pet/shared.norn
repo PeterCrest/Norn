@@ -3,9 +3,13 @@ import "./../common.nornapi"
 
 # Reusable sequence to create a pet and return its data
 sequence CreatePet(name, status = "available")
+    
+    var petId = 100100
+
     POST AddPet
     Json
     {
+        "id": {{petId}},
         "name": "{{name}}",
         "status": "{{status}}",
         "photoUrls": ["https://example.com/photo.jpg"],
@@ -13,7 +17,6 @@ sequence CreatePet(name, status = "available")
         "tags": [{ "id": 1, "name": "friendly" }]
     }
     
-    var petId = $1.body.id
     var petName = $1.body.name
     
     print "Pet Created" | "ID: {{petId}}, Name: {{petName}}"

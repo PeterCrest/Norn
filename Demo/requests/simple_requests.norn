@@ -1,0 +1,19 @@
+[SimpleGet]
+GET https://httpbin.org/get
+
+[SimplePost]
+POST https://httpbin.org/post
+Content-Type: application/json
+{
+    "title": "Norn Demo"
+}
+
+test sequence NornDemo
+
+    var getResult = run SimpleGet
+    var postResult = run SimplePost
+
+    assert getResult.status == 200
+    assert postResult.status == 200
+
+end sequence
