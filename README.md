@@ -562,6 +562,59 @@ norn secrets audit .
 
 When Norn detects a locked secret with a missing key id (`kid`), it prompts once, then stores the key in `.norn-cache/secret-keys.json` (gitignored).
 
+### Deterministic MCP Tools
+
+Norn can call MCP tools directly from sequences. The same runtime is used in VS Code and the CLI, and one MCP client session is reused for each resolved server alias during the sequence run.
+
+Create a `norn.mcp.json` file near the `.norn` file that needs tool access:
+
+```json
+{
+    "version": 1,
+    "servers": {
+        "localTools": {
+            "transport": "stdio",
+            "command": ["node", "./tools/mcp-server.js"]
+        },
+        "remoteTools": {
+            "transport": "http",
+            "url": "https://mcp.example.com/mcp",
+            "headers": {
+                "Authorization": "Bearer {{$env.mcpToken}}"
+            },
+            "timeoutMs": 5000
+        }
+    }
+}
+```
+
+Use MCP commands in a sequence:
+
+```norn
+sequence ToolFlow
+    var tools = run mcp list localTools
+    var result = run mcp call localTools summarize_text(text: "hello world", format: "short")
+
+    assert tools[0].name exists
+    assert result.structuredContent.summary exists
+end sequence
+```
+
+`run mcp list <alias>` resolves the nearest `norn.mcp.json`, fetches all tools, and automatically drains paginated `tools/list` responses.
+
+`run mcp call <alias> <tool>(name: value)` returns a result object with:
+
+- `content`
+- `structuredContent`
+- `isError`
+- `text`
+- `server`
+- `tool`
+
+If a tool advertises an `outputSchema`, Norn validates the returned `structuredContent` before continuing. If validation fails, the sequence fails with a clear schema error.
+
+Sessions are cleaned up automatically when the outermost sequence completes or fails, including nested `run SequenceName` calls.
+
 ### Named Requests
 
 Define reusable requests and call them from sequences:
