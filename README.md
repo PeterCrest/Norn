@@ -602,7 +602,7 @@ end sequence
 
 `run mcp list <alias>` resolves the nearest `norn.mcp.json`, fetches all tools, and automatically drains paginated `tools/list` responses.
 
-`run mcp call <alias> <tool>(name: value)` returns a result object with:
+`run mcp call <alias> <tool>(...)` supports named arguments or positional arguments bound in tool-schema order, and returns a result object with:
 
 - `content`
 - `structuredContent`
