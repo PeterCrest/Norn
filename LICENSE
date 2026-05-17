@@ -8,13 +8,17 @@ If you do not wish to be bound by the terms of this Agreement, you may not downl
 
 • DEFINITIONS
 
+"Extension" means the Norn extension for Visual Studio Code.
+
+"CLI" means the Norn command-line interface.
+
+"Pipeline Use" means execution of the CLI within an automated build, test, integration, delivery or deployment pipeline, including but not limited to continuous integration and continuous delivery (CI/CD) systems, whether hosted or self-hosted, and whether or not triggered by a human.
+
+"Local Use" means execution of the CLI directly by an individual on a workstation or development machine, outside of any automated pipeline.
+
 "Authorized User" means any employee, independent contractor or other temporary worker authorized by Licensee to use the Software while performing duties within the scope of their employment or assignment.
 
-"License Key" means a unique key-code that enables a single Authorized User to use the Software at a time. Only Licensor and/or its representatives are permitted to produce License Keys for the Software.
-
-"Commercial Use" means any use of the Software in connection with a business, including but not limited to: (a) use by an employee or contractor during paid work hours, (b) use to develop, test, or maintain software or services that generate revenue, (c) use within a for-profit organisation, or (d) use in CI/CD pipelines for commercial projects.
-
-"Personal Use" means use by an individual for personal projects, learning, education, or open-source projects that do not generate revenue.
+"License Key" means a unique key-code that authorizes Pipeline Use of the CLI. Only Licensor and/or its representatives are permitted to produce License Keys for the Software.
 
 • OWNERSHIP
 
@@ -26,35 +30,22 @@ Upon your acceptance of this Agreement, Licensor grants you a limited, non-trans
 
 • INTENDED USERS OF THE SOFTWARE
 
-The Norn software is licensed to provide functionality to test APIs in Visual Studio Code as an Extension. The Norn CLI can be used locally on the user's computer for Personal Use without a license. A license is required to use the Software for Commercial Use, including use of the Norn CLI in CI/CD build pipelines.
+The Extension is free to install and use for everyone, including individuals, businesses and organisations, for any purpose including commercial purposes, and never requires a License Key. The CLI is free for Local Use. A License Key is required only for Pipeline Use of the CLI. No License Key is required to use the Extension or to use the CLI for Local Use.
 
-• FREE USE (PERSONAL USE)
+• FREE USE
 
-You may install and use the Software free of charge for Personal Use, including:
-- Personal projects and experimentation
-- Learning and educational purposes
-- Open-source projects that do not generate revenue
-- Academic research
+You may install and use the following free of charge, without a License Key:
+- The Extension, for any use, including commercial use within a for-profit company or organisation
+- The CLI for Local Use, including personal projects and experimentation, learning and education, academic research, and open-source projects
 
-• COMMERCIAL EVALUATION
+• LICENSED USE (PIPELINE USE OF THE CLI)
 
-Businesses and organisations may evaluate the Software for Commercial Use without a license for a period of thirty (30) days from first use ("Evaluation Period"). The Evaluation Period is:
-- Limited to one (1) evaluation period per organisation
-- Intended for genuine evaluation purposes only
-- Not to be used for production workloads or client projects
-- Not extendable or renewable without written permission from the Licensor
+A valid License Key is required for any Pipeline Use of the CLI. For the avoidance of doubt:
+- The Extension never requires a License Key, including when used commercially within a for-profit company or organisation
+- Local Use of the CLI never requires a License Key
+- Only Pipeline Use of the CLI (for example, running the CLI in a CI/CD build, test, or deployment pipeline) requires a License Key
 
-After the Evaluation Period, continued Commercial Use requires a valid license. Abuse of the Evaluation Period, including but not limited to repeated evaluations by the same organisation, rotating users to extend evaluation, or using evaluation for production purposes, constitutes a breach of this Agreement.
-
-• COMMERCIAL USE
-
-A license is required for Commercial Use of the Software after the Evaluation Period. Commercial Use includes but is not limited to:
-- Use within a for-profit company or organisation
-- Use by employees or contractors during paid work
-- Use in CI/CD pipelines for commercial projects
-- Use to develop, test, or maintain revenue-generating software or services
-
-Please contact the Licensor for commercial licensing options.
+Please contact the Licensor for licensing options.
 
 • RESTRICTIONS ON USE OF THE SOFTWARE
 
@@ -64,7 +55,7 @@ b) Decompile, disassemble or reverse engineer the Software or attempt to do any 
 c) Reproduce, copy, distribute, resell or otherwise use the whole or any part of the Software's code for any commercial purpose.
 d) Disable, modify or hide notifications sent by the Software.
 e) Distribute, resell, or share License Keys.
-f) Misrepresent your use as Personal Use when it constitutes Commercial Use.
+f) Misrepresent Pipeline Use of the CLI as Local Use, or otherwise circumvent the License Key requirement for Pipeline Use.
 g) Use older versions of the Software to circumvent licensing requirements.
 
 • LIMITED WARRANTY AND DISCLAIMER OF WARRANTY

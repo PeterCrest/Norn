@@ -1,6 +1,6 @@
 # Norn
 
-Norn is a REST client for VS Code that keeps ad hoc requests, reusable API flows, and test automation in the same files. Write a request once, turn it into a sequence, debug it in the editor, and run the same `.norn` files from the CLI in CI.
+Norn turns API requests into version-controlled tests your whole team can keep — authored and debugged in VS Code, run on every PR in CI. Write a request once, turn it into a tested sequence, debug it with breakpoints in the editor, and run the exact same `.norn` files from the CLI in your pipeline.
 
 ### Simple API Requests
 
